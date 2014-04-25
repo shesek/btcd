@@ -1,0 +1,25 @@
+{
+  "name": "btcd",
+  "version": "0.0.1",
+  "description": "NodeJS client for btcd WebSocket API",
+  "main": "btcd.js",
+  "scripts": {
+    "test": "mocha",
+    "prepublish": "coffee -c btcd.coffee"
+  },
+  "keywords": [
+    "bitcoin",
+    "btcd"
+  ],
+  "repository": "https://github.com/shesek/btcd",
+  "author": "Nadav Ivgi",
+  "license": "MIT",
+  "devDependencies": {
+    "coffee-script": "^1.7.1",
+    "mocha": "^1.18.2"
+  },
+  "dependencies": {
+    "ws": "^0.4.31",
+    "debug": "^0.8.0"
+  }
+}
