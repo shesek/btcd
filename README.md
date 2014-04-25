@@ -57,6 +57,12 @@ BTCD_CERT=./rpc.cert \
 npm test
 ```
 
+### Debug
+
+Information about data being sent and received can be displayed using the
+[debug](https://github.com/visionmedia/debug) package.
+To enable this, start the process with the environment variable `DEBUG=btcd`.
+
 ### License
 
 MIT
