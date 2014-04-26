@@ -8,16 +8,20 @@ class Client extends EventEmitter
   VER = '1.0'
   counter = 0
 
-  constructor: (uri, cert) ->
+  constructor: (@uri, cert) ->
     cert = readFileSync cert if typeof cert is 'string'
-    opt = if cert? then { cert, ca: [ cert ] } else { }
-    @ws = new WebSocket uri, opt
+    @opt = if cert? then { cert, ca: [ cert ] } else { }
+    do @connect
+
+  connect: ->
+    @ws = new WebSocket @uri, @opt
     @ws.on 'message', @handle_message
+    @ws.on 'open', => @emit 'open'
 
   call: (method, params..., cb) ->
     # Queue requests until we're connected
     if @ws.readyState is WebSocket.CONNECTING
-      return @ws.once 'open', @call.bind this, arguments...
+      return @once 'open', @call.bind this, arguments...
 
     id = ++counter
     msg = JSON.stringify { jsonrpc: VER, id, method, params }

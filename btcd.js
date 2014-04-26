@@ -26,24 +26,33 @@
     counter = 0;
 
     function Client(uri, cert) {
+      this.uri = uri;
       this.handle_message = __bind(this.handle_message, this);
-      var opt;
       if (typeof cert === 'string') {
         cert = readFileSync(cert);
       }
-      opt = cert != null ? {
+      this.opt = cert != null ? {
         cert: cert,
         ca: [cert]
       } : {};
-      this.ws = new WebSocket(uri, opt);
-      this.ws.on('message', this.handle_message);
+      this.connect();
     }
+
+    Client.prototype.connect = function() {
+      this.ws = new WebSocket(this.uri, this.opt);
+      this.ws.on('message', this.handle_message);
+      return this.ws.on('open', (function(_this) {
+        return function() {
+          return _this.emit('open');
+        };
+      })(this));
+    };
 
     Client.prototype.call = function() {
       var cb, id, method, msg, params, _i, _ref;
       method = arguments[0], params = 3 <= arguments.length ? __slice.call(arguments, 1, _i = arguments.length - 1) : (_i = 1, []), cb = arguments[_i++];
       if (this.ws.readyState === WebSocket.CONNECTING) {
-        return this.ws.once('open', (_ref = this.call).bind.apply(_ref, [this].concat(__slice.call(arguments))));
+        return this.once('open', (_ref = this.call).bind.apply(_ref, [this].concat(__slice.call(arguments))));
       }
       id = ++counter;
       msg = JSON.stringify({
