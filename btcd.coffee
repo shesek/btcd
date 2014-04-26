@@ -9,9 +9,9 @@ class Client extends EventEmitter
   counter = 0
 
   constructor: (uri, cert) ->
-    throw new Error 'Certificate file is required' unless cert?
     cert = readFileSync cert if typeof cert is 'string'
-    @ws = new WebSocket uri, cert: cert, ca: [ cert ]
+    opt = if cert? then { cert, ca: [ cert ] } else { }
+    @ws = new WebSocket uri, opt
     @ws.on 'message', @handle_message
 
   call: (method, params..., cb) ->
