@@ -27,16 +27,15 @@
 
     function Client(uri, cert) {
       this.handle_message = __bind(this.handle_message, this);
-      if (cert == null) {
-        throw new Error('Certificate file is required');
-      }
+      var opt;
       if (typeof cert === 'string') {
         cert = readFileSync(cert);
       }
-      this.ws = new WebSocket(uri, {
+      opt = cert != null ? {
         cert: cert,
         ca: [cert]
-      });
+      } : {};
+      this.ws = new WebSocket(uri, opt);
       this.ws.on('message', this.handle_message);
     }
 
