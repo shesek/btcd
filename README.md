@@ -42,6 +42,8 @@ btcd.on('recvtx', function(tx, block) {
 btcd.close();
 ```
 
+(TODO: document events)
+
 ### Test
 
 Running the tests requires setting up a local btcd and configuring the tests to
