@@ -16,7 +16,9 @@ class Client extends EventEmitter
   connect: ->
     @ws = new WebSocket @uri, @opt
     @ws.on 'message', @handle_message
-    @ws.on 'open', => @emit 'open'
+    @ws.on 'open', => @emit 'ws:open'
+    @ws.on 'error', (err) => @emit 'ws:error', err
+    @ws.on 'close', (code, msg) => @emit 'ws:close', code, msg
 
   call: (method, params..., cb) ->
     # Queue requests until we're connected

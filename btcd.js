@@ -41,9 +41,19 @@
     Client.prototype.connect = function() {
       this.ws = new WebSocket(this.uri, this.opt);
       this.ws.on('message', this.handle_message);
-      return this.ws.on('open', (function(_this) {
+      this.ws.on('open', (function(_this) {
         return function() {
-          return _this.emit('open');
+          return _this.emit('ws:open');
+        };
+      })(this));
+      this.ws.on('error', (function(_this) {
+        return function(err) {
+          return _this.emit('ws:error', err);
+        };
+      })(this));
+      return this.ws.on('close', (function(_this) {
+        return function(code, msg) {
+          return _this.emit('ws:close', code, msg);
         };
       })(this));
     };
