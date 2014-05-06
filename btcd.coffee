@@ -38,6 +38,8 @@ class Client extends EventEmitter
     { id, error, result, method, params } = JSON.parse msg
     debug "<- %s", msg
 
+    error = to_error error if error?
+
     # If we have an id, notify the listener
     if id?
       if error? then @emit 'res:'+id, error
@@ -51,5 +53,10 @@ class Client extends EventEmitter
 
   methods.forEach (method) =>
     @::[method] = (a...) -> @call method, a...
+
+to_error = (data) ->
+  err = new Error data.message
+  err.code = data.code
+  err
 
 module.exports = (uri, cert) -> new Client uri, cert
