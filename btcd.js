@@ -62,7 +62,7 @@
       var cb, id, method, msg, params, _i, _ref;
       method = arguments[0], params = 3 <= arguments.length ? __slice.call(arguments, 1, _i = arguments.length - 1) : (_i = 1, []), cb = arguments[_i++];
       if (this.ws.readyState === WebSocket.CONNECTING) {
-        return this.once('open', (_ref = this.call).bind.apply(_ref, [this].concat(__slice.call(arguments))));
+        return this.once('ws:open', (_ref = this.call).bind.apply(_ref, [this].concat(__slice.call(arguments))));
       }
       id = ++counter;
       msg = JSON.stringify({

@@ -23,7 +23,7 @@ class Client extends EventEmitter
   call: (method, params..., cb) ->
     # Queue requests until we're connected
     if @ws.readyState is WebSocket.CONNECTING
-      return @once 'open', @call.bind this, arguments...
+      return @once 'ws:open', @call.bind this, arguments...
 
     id = ++counter
     msg = JSON.stringify { jsonrpc: VER, id, method, params }
